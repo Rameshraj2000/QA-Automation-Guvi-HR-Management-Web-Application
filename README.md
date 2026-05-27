@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 **Project Title**
 >Automation Testing of HR Management Web Application https://opensource-demo.orangehrmlive.com
 
@@ -66,3 +67,7 @@ the Page object model (POM) design pattern
 
 **Author**
 **Rameshraj Selvaraju**
+=======
+# QA-Automation-Guvi-HR-Management-Web-Application
+HR Management Web Application
+>>>>>>> 2ea5663938108a241ce206a7a2fcc3f9e8e91e0e

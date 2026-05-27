@@ -1,0 +1,111 @@
+import time
+
+from pages.dashboard_page import DashBoardpage
+from pages.login_page import LoginPage
+
+#Test Verify visibility and clickability of main menu items after login
+def test_menu_item(setup):
+    login_page = LoginPage(setup)
+    dashboard_page = DashBoardpage(setup)
+    login_page.login("Admin", "admin123")
+    dashboard_page.admin_items()
+    dashboard_page.pim_items()
+    dashboard_page.leave_items()
+    dashboard_page.time_item()
+    dashboard_page.recruitment_item()
+    dashboard_page.myinfo_item()
+    dashboard_page.performance_item()
+    dashboard_page.dashboard_item()
+
+#Test Create a new user and validate login
+def test_new_user(setup):
+    login_page = LoginPage(setup)
+    dash_board = DashBoardpage(setup)
+    login_page.login("Admin", "admin123")
+    dash_board.click_admin_tab()
+    dash_board.click_add_user()
+    dash_board.click_user_role()
+    dash_board.click_user_dropdown()
+    dash_board.emp_hint("John")
+    dash_board.click_status()
+    dash_board.click_status_drop()
+    dash_board.username_key("dummytest1")
+    dash_board.enter_password("dummy@1#")
+    dash_board.confirm_password("dummy@1#")
+    login_page.click_logout()
+    login_page.login("dummytest1", "dummy@1#")
+    assert "orangehrmlive" in setup.current_url
+    login_page.click_logout()
+    assert login_page.username_field()
+
+#Test Validate the presence of menu items under “My Info”
+def test_menu_items(setup):
+    dash_board = DashBoardpage(setup)
+    login_page = LoginPage(setup)
+
+    login_page.login("Admin", "admin123")
+    dash_board.click_myinfo()
+    dash_board.personal_detail_visible()
+    assert dash_board.user_personal_check()
+    dash_board.user_contact_visible()
+    assert dash_board.user_contact_check()
+    dash_board.user_emergency_visible()
+    assert dash_board.user_emergency_check()
+    dash_board.user_dependant_visible()
+    assert dash_board.user_dependant_check()
+    dash_board.user_immigration_visible()
+    assert dash_board.user_immigration_check()
+    dash_board.user_job_visible()
+    assert dash_board.user_job_check()
+    dash_board.user_salary_visible()
+    assert dash_board.user_salary_check()
+    dash_board.user_report_visible()
+    assert dash_board.user_report_check()
+    dash_board.user_qualification_visible()
+    assert dash_board.user_qualification_check()
+    dash_board.user_membership_visible()
+    assert dash_board.user_membership_check()
+
+#Test Assign leave to an employee and verify assignment
+def test_leave_apply(setup):
+    dash_board = DashBoardpage(setup)
+    login_page = LoginPage(setup)
+
+    login_page.login("Admin", "admin123")
+    dash_board.click_leave_item()
+    dash_board.click_assign_leave()
+    dash_board.user_leave("James  Butler")
+    dash_board.leave_type()
+    dash_board.leave_type_drop()
+    dash_board.from_leave_dates("2026-05-28")
+    dash_board.to_leave_dates("2026-05-29")
+    dash_board.leave_partial()
+    dash_board.leave_partial_drop()
+    dash_board.leave_half_full()
+    dash_board.leave_half_drop()
+    dash_board.leave_comments("Personal")
+    dash_board.assign_leave()
+    dash_board.wait_leave_popup()
+    dash_board.click_ok_leave()
+    assert dash_board.verify_success_message().is_displayed()
+    login_page.click_logout()
+    login_page.login("testuser2", "testuser@2")
+    dash_board.click_leave_item()
+    assert dash_board.verify_leave_created("James Butler")
+
+#Test Initiate a claim requestx
+def test_emp_claim(setup):
+    login_page = LoginPage(setup)
+    dashboard_page = DashBoardpage(setup)
+    login_page.login("test_user1", "testuser@1")
+    dashboard_page.emp_claim_click()
+    dashboard_page.emp_claim_btn()
+    dashboard_page.emp_claim_event()
+    dashboard_page.emp_claim_currency()
+    dashboard_page.emp_claim_remarks("Personal")
+    dashboard_page.emp_claim_create_btn()
+    dashboard_page.emp_claim_submit()
+    assert dashboard_page.verify_success_message().is_displayed()
+    dashboard_page.emp_claim_myclaim()
+
+    assert dashboard_page.verify_claim_created("Accommodation")

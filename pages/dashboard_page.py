@@ -76,6 +76,7 @@ class DashBoardpage(BasePage):
         actions = ActionChains(self.driver)
         actions.move_to_element(element).click().send_keys(pas).perform()
 
+    def click_save(self):
         elements = self.find_visible(Pagelocator.save_btn)
         elements.click()
 

@@ -1,7 +1,10 @@
+import allure
 from pages.login_page import LoginPage
 from utils.excel_reader import read_login_data, write_result
 
 #Test Validate login functionality using multiple sets of credentials
+@allure.feature("Multiple User")
+@allure.story("Multiple User login")
 def test_login_multiple_credentials(setup):
     login = LoginPage(setup)
 
@@ -20,10 +23,14 @@ def test_login_multiple_credentials(setup):
         setup.get("https://opensource-demo.orangehrmlive.com")
 
 #Test Verify that the home URL is accessible
+@allure.feature("Home URL")
+@allure.story("Check Home URL")
 def test_home_url(setup):
     assert "orangehrmlive.com" in setup.current_url
 
 #Test Validate presence of login fields
+@allure.feature("Login Fields")
+@allure.story("Check Login Fields")
 def test_user_pass_field(setup):
     login_page = LoginPage(setup)
     assert login_page.username_field()
@@ -35,6 +42,8 @@ def test_user_pass_field(setup):
 #     assert "dashboard" in setup.current_url
 
 #Test Verify "Forgot Password" link functionality
+@allure.feature("Forgot Password")
+@allure.story("Forgot password link check")
 def test_forgot_pass(setup):
     login_page = LoginPage(setup)
     login_page.click_forgot_pass()

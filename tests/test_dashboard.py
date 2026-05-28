@@ -1,9 +1,11 @@
 import time
-
+import allure
 from pages.dashboard_page import DashBoardpage
 from pages.login_page import LoginPage
 
 #Test Verify visibility and clickability of main menu items after login
+@allure.feature("Menu Header")
+@allure.story("Check Menu Items")
 def test_menu_item(setup):
     login_page = LoginPage(setup)
     dashboard_page = DashBoardpage(setup)
@@ -18,6 +20,8 @@ def test_menu_item(setup):
     dashboard_page.dashboard_item()
 
 #Test Create a new user and validate login
+@allure.feature("New User")
+@allure.story("Check New User")
 def test_new_user(setup):
     login_page = LoginPage(setup)
     dash_board = DashBoardpage(setup)
@@ -26,19 +30,23 @@ def test_new_user(setup):
     dash_board.click_add_user()
     dash_board.click_user_role()
     dash_board.click_user_dropdown()
-    dash_board.emp_hint("John")
+    dash_board.emp_hint("Peter Mac Anderson")
     dash_board.click_status()
     dash_board.click_status_drop()
-    dash_board.username_key("dummytest1")
-    dash_board.enter_password("dummy@1#")
-    dash_board.confirm_password("dummy@1#")
+    dash_board.username_key("test_user@12")
+    dash_board.enter_password("test_user@12")
+    dash_board.confirm_password("test_user@12")
+    dash_board.click_save()
+    assert dash_board.verify_success_message().is_displayed()
     login_page.click_logout()
-    login_page.login("dummytest1", "dummy@1#")
+    login_page.login("test_user@12", "test_user@12")
     assert "orangehrmlive" in setup.current_url
     login_page.click_logout()
     assert login_page.username_field()
 
 #Test Validate the presence of menu items under “My Info”
+@allure.feature("Menu Header")
+@allure.story("Check Menu Items in Myinfo")
 def test_menu_items(setup):
     dash_board = DashBoardpage(setup)
     login_page = LoginPage(setup)
@@ -67,6 +75,8 @@ def test_menu_items(setup):
     assert dash_board.user_membership_check()
 
 #Test Assign leave to an employee and verify assignment
+@allure.feature("Apply leave")
+@allure.story("Apply leave form")
 def test_leave_apply(setup):
     dash_board = DashBoardpage(setup)
     login_page = LoginPage(setup)
@@ -74,11 +84,11 @@ def test_leave_apply(setup):
     login_page.login("Admin", "admin123")
     dash_board.click_leave_item()
     dash_board.click_assign_leave()
-    dash_board.user_leave("James  Butler")
+    dash_board.user_leave("James Butler")
     dash_board.leave_type()
     dash_board.leave_type_drop()
-    dash_board.from_leave_dates("2026-05-28")
-    dash_board.to_leave_dates("2026-05-29")
+    dash_board.from_leave_dates("2026-02-06")
+    dash_board.to_leave_dates("2026-03-06")
     dash_board.leave_partial()
     dash_board.leave_partial_drop()
     dash_board.leave_half_full()
@@ -89,15 +99,17 @@ def test_leave_apply(setup):
     dash_board.click_ok_leave()
     assert dash_board.verify_success_message().is_displayed()
     login_page.click_logout()
-    login_page.login("testuser2", "testuser@2")
+    login_page.login("test_user@13", "test_user@13")
     dash_board.click_leave_item()
     assert dash_board.verify_leave_created("James Butler")
 
 #Test Initiate a claim requestx
+@allure.feature("Claim")
+@allure.story("Employee Claim")
 def test_emp_claim(setup):
     login_page = LoginPage(setup)
     dashboard_page = DashBoardpage(setup)
-    login_page.login("test_user1", "testuser@1")
+    login_page.login("test_user@13", "test_user@13")
     dashboard_page.emp_claim_click()
     dashboard_page.emp_claim_btn()
     dashboard_page.emp_claim_event()

@@ -1,8 +1,11 @@
+import allure
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashBoardpage
 from pages.user_page import UserPage
 
 #Validate presence of the newly created user in the admin user list
+@allure.feature("Search User")
+@allure.story("Check New User")
 def test_search_user(setup):
     logging_page = LoginPage(setup)
     dash_board = DashBoardpage(setup)
@@ -10,8 +13,8 @@ def test_search_user(setup):
 
     logging_page.login("Admin", "admin123")
     dash_board.click_admin_tab()
-    user_login_page.search_user("dummytest1")
+    user_login_page.search_user("test_user@10")
     user_login_page.user_page()
-    user_login_page.username_key("John")
+    user_login_page.username_key("Peter Mac Anderson")
     user_login_page.user_search_act()
-    assert user_login_page.is_user_present("dummytest1")
+    assert user_login_page.is_user_present("test_user@10")

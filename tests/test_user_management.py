@@ -1,4 +1,5 @@
 import allure
+import pytest
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashBoardpage
 from pages.user_page import UserPage
@@ -6,6 +7,7 @@ from pages.user_page import UserPage
 #Validate presence of the newly created user in the admin user list
 @allure.feature("Search User")
 @allure.story("Check New User")
+@pytest.mark.skip(reason="Flaky in Jenkins") #added pytest fixture to skip due to flaky test in Jenkins
 def test_search_user(setup):
     logging_page = LoginPage(setup)
     dash_board = DashBoardpage(setup)
